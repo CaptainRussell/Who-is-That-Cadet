@@ -400,7 +400,8 @@ CADRE.forEach(function (c, i) {
 });
 function posText(p) { return p.pos || p.role; }
 function whoLine(p) { return p.type === 'cadre' ? 'Who&rsquo;s that Cadre?!' : 'Who&rsquo;s that Cadet?!'; }
-function sayName(p) { return esc(firstName(p)) + ' ' + esc(p.last); }
+// Announcement name: "Cadet Captain Tu" / "Captain Russell"; no rank (civilian staff) falls back to first + last
+function sayName(p) { return p.rank ? esc(p.rank) + ' ' + esc(p.last) : esc(firstName(p)) + ' ' + esc(p.last); }
 function heroPhoto(p) {                       // the big photo; starts as a silhouette in shadow mode
   const ph = photo(p);
   if (store.shadow) ph.classList.add('shadow');
@@ -453,8 +454,7 @@ function metaLine(p) {
   return p.as + ' &middot; ' + p.flight + (p.flight === 'Deployed' ? '' : ' Flight');
 }
 function revealHTML(p) {
-  return '<div class="reveal">' +
-    (p.rank ? '<div class="rv-rank">' + esc(p.rank) + '</div>' : '') +
+  return '<div class="reveal">' +                 // rank is already in the "It's <rank> <last>!" headline
     '<div class="rv-name">' + esc(p.first) + ' ' + esc(p.last) + '</div>' +
     (p.goes ? '<div class="rv-goes">goes by &ldquo;' + esc(p.goes) + '&rdquo;</div>' : '') +
     '<div class="rv-meta">' + metaLine(p) + '</div>' +
